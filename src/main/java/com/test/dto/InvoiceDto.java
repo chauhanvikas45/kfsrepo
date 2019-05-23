@@ -7,6 +7,8 @@ public class InvoiceDto {
     private Integer id;
     private String invoiceNumber;
     private String totolAmount;
+    private Customer customer;
+    private  Product product;
 
     public String getTotolAmount() {
         return totolAmount;
@@ -48,6 +50,5 @@ public class InvoiceDto {
         this.product = product;
     }
 
-    private Customer customer;
-    private  Product product;
+
 }

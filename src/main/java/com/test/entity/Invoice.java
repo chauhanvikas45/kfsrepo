@@ -1,5 +1,9 @@
 package com.test.entity;
 
+import com.test.utils.StringPrefixedSequenceIdGenerator;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,12 +13,23 @@ import java.util.List;
 public class Invoice {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+   // @CreationTimestamp
+
+    /*@GenericGenerator(
+            name = "inovices",
+            strategy = "com.test.utils.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "B_"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })*/
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "inovices"*/)
     private String inovices;
     private String totalAmount;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date lastUpdated;
 
 

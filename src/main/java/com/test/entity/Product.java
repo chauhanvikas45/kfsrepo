@@ -1,5 +1,7 @@
 package com.test.entity;
 
+import org.springframework.boot.autoconfigure.web.ResourceProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,7 +11,7 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name="productName" , nullable = false)
     private String productName;

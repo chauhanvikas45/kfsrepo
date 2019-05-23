@@ -10,8 +10,8 @@ public class InvoiceMapper {
         Invoice invoice = new Invoice();
 
         invoice.setCustomers(invoiceDto.getCustomer());
-        invoice.setId(invoiceDto.getId());
-        invoice.setInvoiceNumber(invoiceDto.getInvoiceNumber());
+        //invoice.setId(invoiceDto.getId());
+        //invoice.setInvoiceNumber(invoiceDto.getInvoiceNumber());
         invoice.setProductId(invoiceDto.getProduct());
         invoice.setTotalAmount(invoiceDto.getTotolAmount());
 

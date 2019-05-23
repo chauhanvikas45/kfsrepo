@@ -3,6 +3,7 @@ package com.test.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.dto.CustomerDto;
 import com.test.dto.InvoiceDto;
+import com.test.dto.ProductDto;
 import com.test.entity.Invoice;
 import com.test.services.InvoiceService;
 import org.springframework.http.HttpStatus;
@@ -39,8 +40,8 @@ public class InvoiceController {
 
     @CrossOrigin
     @RequestMapping(path = "/generateInvoice", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity generateInvoiceForProduct(InvoiceDto invoiceDto) throws JsonProcessingException {
-        invoiceService.generateInvoice(invoiceDto);
+    public ResponseEntity generateInvoiceForProduct(@RequestBody ProductDto productDto) throws JsonProcessingException {
+        invoiceService.generateInvoice(productDto);
         return new ResponseEntity("Success", HttpStatus.OK);
     }
 

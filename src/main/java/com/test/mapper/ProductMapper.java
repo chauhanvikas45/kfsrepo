@@ -8,6 +8,7 @@ public class ProductMapper {
 
     public static Product mapDtoToEntity(final ProductDto productDto){
         Product product = new Product();
+        product.setId(productDto.getId());
         product.setProductDescription(productDto.getProductDescription());
         product.setCgst(productDto.getCgst());
         product.setSgst(productDto.getSgst());
