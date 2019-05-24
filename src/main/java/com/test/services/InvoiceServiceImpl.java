@@ -8,11 +8,12 @@ import com.test.mapper.CustomerMapper;
 import com.test.mapper.InvoiceMapper;
 import com.test.mapper.ProductMapper;
 import com.test.repository.InvoiceRepository;
+import com.test.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    ProductRepository productRepository;
 
 
     @Override
@@ -33,18 +36,22 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void generateInvoice(ProductDto productDto) {
+    public String generateInvoice(ProductDto productDto, Model model) {
+
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setCustomer(productDto.getCustomer());
+        //Product product = productRepository.findById(product.getId();
+        //if(productDto.getProductQuantity() > )
         invoiceDto.setProduct(ProductMapper.mapDtoToEntity(productDto));
-        invoiceDto.setTotolAmount(calculateInvoiceAmount(productDto));
-        //invoiceDto.setInvoiceNumber("generated");
+        invoiceDto.setTotalAmount(calculateInvoiceAmount(productDto, invoiceDto));
 
         Invoice invoice = InvoiceMapper.invoiceDtoToEntity(invoiceDto);
 
         invoiceRepository.save(invoice);
-
+        invoiceDto.setCurrentDate(LocalDate.now());
+        return getInvoice(model, invoiceDto);
     }
+
 
     @Override
     public List<Invoice> getInvoiceListForCustomer(CustomerDto customerDto) {
@@ -53,31 +60,67 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.getInvoiceListByCustomers(CustomerMapper.mapCustomerDtoToEntity(customerDto)).forEach(invoice -> {
             invoiceList.add(invoice);
         });
+
         return invoiceList;
     }
 
-    private String calculateInvoiceAmount(ProductDto productDto) {
+    private String calculateInvoiceAmount(ProductDto productDto, InvoiceDto invoiceDto) {
 
         int totalAmount = 0;
+        int cgst=0;
+        int sgst=0;
+        int igst=0;
 
         totalAmount = totalAmount + Integer.parseInt(productDto.getProductQuantity()) * Integer.parseInt(productDto.getProductRate());
+        if (null != invoiceDto.getProduct().getCgst() &&invoiceDto.getProduct().getCgst().equals("true")){
+            cgst =getCgstTax(totalAmount);
+            invoiceDto.getProduct().setCgst(String.valueOf(cgst));
+        }
 
-        if (null != productDto.getCgst()) {
-            totalAmount = (totalAmount) * 9;
+        if (null != invoiceDto.getProduct().getSgst() && invoiceDto.getProduct().getSgst().equals("true")){
+            sgst=getSgstTax(totalAmount);
+            invoiceDto.getProduct().setSgst(String.valueOf(sgst));
         }
-        if (null != productDto.getSgst()) {
-            totalAmount = (totalAmount) * 9;
+
+        if (null != invoiceDto.getProduct().getIgst() && invoiceDto.getProduct().getIgst().equals("true")){
+            igst =getIgstTax(totalAmount);
+            invoiceDto.getProduct().setIgst(String.valueOf(igst));
         }
-        if (null != productDto.getIgst()) {
-            totalAmount = (totalAmount) * 18;
-        }
+
+
+        invoiceDto.setAmountWithoutTax(String.valueOf(totalAmount));
+        invoiceDto.setTotalTax(String.valueOf(sgst+igst+cgst));
+        totalAmount = totalAmount + sgst+igst+cgst;
+
+        //System.out.println("tax " + getCgstTax(totalAmount) + " " + getIgstTax(totalAmount) + " " + getSgstTax(totalAmount));
 
         return String.valueOf(totalAmount);
     }
 
+    private int getSgstTax(int totalAmount) {
+        int i = (totalAmount * 9) / 100;
+        return i;
 
-    public String getInvoice(Model model) {
-        model.addAttribute("message", "hello vikas!!!!!!!!");
+    }
+
+    private int getCgstTax(int totalAmount) {
+        int i = (totalAmount * 9) / 100;
+        return i;
+
+    }
+
+    private int getIgstTax(int totalAmount) {
+        int i = (totalAmount * 18) / 100;
+        return i;
+
+    }
+
+    private int getTotaltax(int totalAmount) {
+        return getCgstTax(totalAmount) + getIgstTax(totalAmount) + getSgstTax(totalAmount);
+    }
+
+    private String getInvoice(Model model, InvoiceDto invoiceDto) {
+        model.addAttribute("invoice", invoiceDto);
         return "index";
     }
 

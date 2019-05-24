@@ -8,11 +8,13 @@ import com.test.entity.Invoice;
 import com.test.services.InvoiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class InvoiceController {
 
     private InvoiceService invoiceService;
@@ -39,10 +41,11 @@ public class InvoiceController {
 
 
     @CrossOrigin
-    @RequestMapping(path = "/generateInvoice", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity generateInvoiceForProduct(@RequestBody ProductDto productDto) throws JsonProcessingException {
-        invoiceService.generateInvoice(productDto);
-        return new ResponseEntity("Success", HttpStatus.OK);
+    @RequestMapping(path = "/generateInvoice", method = RequestMethod.POST/*, produces = "application/json"*/)
+    public String generateInvoiceForProduct(@RequestBody ProductDto productDto,Model model) throws JsonProcessingException {
+        String resp = invoiceService.generateInvoice(productDto,model);
+        return resp;
+        //return invoiceService.getInvoice(model);
     }
 
 

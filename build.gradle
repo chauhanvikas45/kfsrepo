@@ -23,6 +23,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
     compile group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
     runtimeOnly('org.postgresql:postgresql')
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 
 }
 buildscript {

@@ -13,7 +13,7 @@ public class InvoiceMapper {
         //invoice.setId(invoiceDto.getId());
         //invoice.setInvoiceNumber(invoiceDto.getInvoiceNumber());
         invoice.setProductId(invoiceDto.getProduct());
-        invoice.setTotalAmount(invoiceDto.getTotolAmount());
+        invoice.setTotalAmount(invoiceDto.getTotalAmount());
 
         return invoice;
     }

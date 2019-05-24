@@ -12,10 +12,10 @@ import java.util.List;
 public interface InvoiceService {
     List<Invoice> getInvoiceDetails(String invoiceNumber);
 
-    void generateInvoice(ProductDto productDto);
+    String generateInvoice(ProductDto productDto,Model model);
 
     List<Invoice> getInvoiceListForCustomer(CustomerDto customerDto);
 
-    String getInvoice(Model model) ;
+    //String getInvoice(Model model,InvoiceDto invoiceDto) ;
 
 }
