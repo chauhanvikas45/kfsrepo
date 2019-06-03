@@ -18,30 +18,77 @@ public class Product {
     @Column(name="productDescription" , nullable = false)
     private String productDescription;
     @Column(name="productHSNCode" , nullable = false)
-    private String productHSNCode;
+    private int productHSNCode;
     @Column(name="productUON" , nullable = false)
     private String productUON;
     @Column(name="productQuantity" , nullable = false)
-    private String productQuantity;
+    private int productQuantity;
     @Column(name="productRate" , nullable = false)
-    private String productRate;
+    private Float productRate;
     @Column(name="productImage" , nullable = true)
     private String productImage;
 
-    private String cgst;
-    private String sgst;
-    private String igst;
+    @Column(name = "cgst")
+    private Float cgst;
+    @Column(name = "sgst")
+    private Float sgst;
+    @Column(name = "igst")
+    private Float igst;
+
+    @Column(name = "deletionFlag")
+    private boolean deletionFlag=false;
+
+
     @ManyToOne
-    @JoinColumn(name = "customer")
-    private Customer customer;
+    @JoinColumn(name = "customerBranch")
+    private CustomerBranch customerBranch;
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomerProduct() {
+        return customerProduct;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerProduct(Customer customerProduct) {
+        this.customerProduct = customerProduct;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "customerProduct")
+    private Customer customerProduct;
+
+    public void setProductRate(Float productRate) {
+        this.productRate = productRate;
+    }
+
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
+    }
+
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public void setIgst(Float igst) {
+        this.igst = igst;
+    }
+
+    public CustomerBranch getCustomerBranch() {
+        return customerBranch;
+    }
+
+    public void setCustomerBranch(CustomerBranch customerBranch) {
+        this.customerBranch = customerBranch;
+    }
+
+    public boolean isDeletionFlag() {
+        return deletionFlag;
+    }
+
+    public void setDeletionFlag(boolean deletionFlag) {
+        this.deletionFlag = deletionFlag;
+    }
+
+
+
 
   /*  public Set<Invoice> getInvoices() {
         return invoices;
@@ -71,27 +118,27 @@ public class Product {
         return productName;
     }
 
-    public String getCgst() {
+    public float getCgst() {
         return cgst;
     }
 
-    public void setCgst(String cgst) {
+    public void setCgst(float cgst) {
         this.cgst = cgst;
     }
 
-    public String getSgst() {
+    public float getSgst() {
         return sgst;
     }
 
-    public void setSgst(String sgst) {
+    public void setSgst(float sgst) {
         this.sgst = sgst;
     }
 
-    public String getIgst() {
+    public float getIgst() {
         return igst;
     }
 
-    public void setIgst(String igst) {
+    public void setIgst(float igst) {
         this.igst = igst;
     }
 
@@ -107,11 +154,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public String getProductHSNCode() {
+    public int getProductHSNCode() {
         return productHSNCode;
     }
 
-    public void setProductHSNCode(String productHSNCode) {
+    public void setProductHSNCode(int productHSNCode) {
         this.productHSNCode = productHSNCode;
     }
 
@@ -123,19 +170,19 @@ public class Product {
         this.productUON = productUON;
     }
 
-    public String getProductQuantity() {
+    public int getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(String productQuantity) {
+    public void setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
     }
 
-    public String getProductRate() {
+    public float getProductRate() {
         return productRate;
     }
 
-    public void setProductRate(String productRate) {
+    public void setProductRate(float productRate) {
         this.productRate = productRate;
     }
 

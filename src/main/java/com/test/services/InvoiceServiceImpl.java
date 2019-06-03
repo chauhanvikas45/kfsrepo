@@ -3,19 +3,24 @@ package com.test.services;
 import com.test.dto.CustomerDto;
 import com.test.dto.InvoiceDto;
 import com.test.dto.ProductDto;
+import com.test.entity.Customer;
+import com.test.entity.CustomerBranch;
 import com.test.entity.Invoice;
 import com.test.mapper.CustomerMapper;
 import com.test.mapper.InvoiceMapper;
 import com.test.mapper.ProductMapper;
 import com.test.repository.InvoiceRepository;
 import com.test.repository.ProductRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -36,10 +41,25 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public String generateInvoice(ProductDto productDto, Model model) {
+    public String generateInvoice(ProductDto productDto, Model model) throws NotFoundException {
 
         InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setCustomer(productDto.getCustomer());
+        Customer customer = new Customer();
+
+        if(null != customer.getCustomerBranch()){
+            if(!customer.getCustomerBranch().contains(productDto.getCustomerBranch()))
+            {
+            customer.getCustomerBranch().add(productDto.getCustomerBranch());
+            }
+
+        }
+        else
+        {
+            Set<CustomerBranch> customerBranchSet = new HashSet<CustomerBranch>();
+            customer.setCustomerBranch(customerBranchSet);
+        }
+
+        invoiceDto.setCustomer(customer);
         //Product product = productRepository.findById(product.getId();
         //if(productDto.getProductQuantity() > )
         invoiceDto.setProduct(ProductMapper.mapDtoToEntity(productDto));
@@ -49,6 +69,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         invoiceRepository.save(invoice);
         invoiceDto.setCurrentDate(LocalDate.now());
+        if(null == invoiceDto.getCustomer()){
+            throw new NotFoundException("Customer details not found");
+        }
         return getInvoice(model, invoiceDto);
     }
 
@@ -64,15 +87,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceList;
     }
 
-    private String calculateInvoiceAmount(ProductDto productDto, InvoiceDto invoiceDto) {
+    private double calculateInvoiceAmount(ProductDto productDto, InvoiceDto invoiceDto) {
 
-        int totalAmount = 0;
-        int cgst=0;
-        int sgst=0;
-        int igst=0;
+        double totalAmount = 0;
+        float cgst=0;
+        float sgst=0;
+        float igst=0;
 
-        totalAmount = totalAmount + Integer.parseInt(productDto.getProductQuantity()) * Integer.parseInt(productDto.getProductRate());
-        if (null != invoiceDto.getProduct().getCgst() &&invoiceDto.getProduct().getCgst().equals("true")){
+        totalAmount = totalAmount + productDto.getProductQuantity() * productDto.getProductRate();
+        /*if (null != invoiceDto.getProduct().getCgst() &&invoiceDto.getProduct().getCgst().equals("true")){
             cgst =getCgstTax(totalAmount);
             invoiceDto.getProduct().setCgst(String.valueOf(cgst));
         }
@@ -85,16 +108,16 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (null != invoiceDto.getProduct().getIgst() && invoiceDto.getProduct().getIgst().equals("true")){
             igst =getIgstTax(totalAmount);
             invoiceDto.getProduct().setIgst(String.valueOf(igst));
-        }
+        }*/
 
 
-        invoiceDto.setAmountWithoutTax(String.valueOf(totalAmount));
-        invoiceDto.setTotalTax(String.valueOf(sgst+igst+cgst));
+        invoiceDto.setAmountWithoutTax(totalAmount);
+        invoiceDto.setTotalTax(sgst+igst+cgst);
         totalAmount = totalAmount + sgst+igst+cgst;
 
         //System.out.println("tax " + getCgstTax(totalAmount) + " " + getIgstTax(totalAmount) + " " + getSgstTax(totalAmount));
 
-        return String.valueOf(totalAmount);
+        return totalAmount;
     }
 
     private int getSgstTax(int totalAmount) {

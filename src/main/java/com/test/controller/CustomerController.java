@@ -34,7 +34,7 @@ public class CustomerController {
     @CrossOrigin
     @RequestMapping(path = "/getCustomerList", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getCustomerList() throws JsonProcessingException {
-        List<Customer> customerList = customerService.getCustomerList();
+        List<CustomerDto> customerList = customerService.getCustomerList();
         System.out.println(customerList);
         return new ResponseEntity(customerList, HttpStatus.OK);
     }

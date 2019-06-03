@@ -3,6 +3,7 @@ package com.test.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,28 +14,45 @@ public class Customer {
     private int id;
     @Column(name="customerName" , nullable = false)
     private String customerName;
-    @Column(name="customerAddress" , nullable = false)
-    private String customerAddress;
-    @Column(name="customerEmail" , nullable = false)
-    private String customerEmail;
+
     @Column(name="customerGSTIN" , nullable = false)
     private String customerGSTIN;
-    @Column(name="customerState" , nullable = false)
-    private String customerState;
-    @Column(name="customerCode" , nullable = false)
-    private String customerCode;
-    @Column(name="customerPhone" , nullable = false)
-    private String customerPhone;
 
-//    @OneToMany
-//    @JoinColumn(name = "productId")
+    @Column(name="deletionStatus")
+    private boolean deletionFlag =false;
 
-/*    @OneToMany(mappedBy="invoice")
-    private Set<Invoice> invoices;*/
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customerProduct")
     private Set<Product> product;
+
+    @OneToMany(mappedBy = "customerForBranch")
+    private Set<CustomerBranch> customerBranch;
+
+
+    public boolean isDeletionFlag() {
+        return deletionFlag;
+    }
+
+    public void setDeletionFlag(boolean deletionFlag) {
+        this.deletionFlag = deletionFlag;
+    }
+
+
+
+    public String getCustomerGSTIN() {
+        return customerGSTIN;
+    }
+
+    public void setCustomerGSTIN(String customerGSTIN) {
+        this.customerGSTIN = customerGSTIN;
+    }
+
+    public Set<CustomerBranch> getCustomerBranch() {
+        return customerBranch;
+    }
+
+    public void setCustomerBranch(Set<CustomerBranch> customerBranch) {
+        this.customerBranch = customerBranch;
+    }
 
     public Set<Product> getProduct() {
         return product;
@@ -60,51 +78,5 @@ public class Customer {
         this.customerName = customerName;
     }
 
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
 
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
-
-    public String getCustomerGSTIN() {
-        return customerGSTIN;
-    }
-
-    public void setCustomerGSTIN(String customerGSTIN) {
-        this.customerGSTIN = customerGSTIN;
-    }
-
-    public String getCustomerState() {
-        return customerState;
-    }
-
-    public void setCustomerState(String customerState) {
-        this.customerState = customerState;
-    }
-
-    public String getCustomerCode() {
-        return customerCode;
-    }
-
-    public void setCustomerCode(String customerCode) {
-        this.customerCode = customerCode;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
 }

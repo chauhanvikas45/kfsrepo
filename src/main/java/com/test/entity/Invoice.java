@@ -27,11 +27,14 @@ public class Invoice {
                     @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })*/
     @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "inovices"*/)
     private String inovices;
-    private String totalAmount;
+    private double totalAmount;
 
     @CreationTimestamp
     private Date lastUpdated;
 
+    @ManyToOne
+    @JoinColumn(name = "customerBranchId")
+    private CustomerBranch customerBranch;
 
     @ManyToOne
     @JoinColumn(name = "productId")
@@ -41,6 +44,27 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name = "customerId")
     private Customer customers;
+
+    public String getInovices() {
+        return inovices;
+    }
+
+    public void setInovices(String inovices) {
+        this.inovices = inovices;
+    }
+
+    public Product getProductId() {
+        return productId;
+    }
+
+    public CustomerBranch getCustomerBranch() {
+        return customerBranch;
+    }
+
+    public void setCustomerBranch(CustomerBranch customerBranch) {
+        this.customerBranch = customerBranch;
+    }
+
 
 
     public int getId() {
@@ -71,11 +95,11 @@ public class Invoice {
         this.inovices = invoiceNumber;
     }
 
-    public String getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 

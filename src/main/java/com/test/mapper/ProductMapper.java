@@ -19,7 +19,7 @@ public class ProductMapper {
         product.setProductQuantity(productDto.getProductQuantity());
         product.setProductRate(productDto.getProductRate());
         product.setProductUON(productDto.getProductUON());
-        product.setCustomer(productDto.getCustomer());
+        product.setCustomerBranch(productDto.getCustomerBranch());
         return product;
     }
 

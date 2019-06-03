@@ -9,11 +9,11 @@ import java.util.Date;
 public class InvoiceDto {
     private Integer id;
     private String invoiceNumber;
-    private String totalAmount;
+    private double totalAmount;
     private Customer customer;
     private  Product product;
-    private String totalTax;
-    private String amountWithoutTax;
+    private double totalTax;
+    private double amountWithoutTax;
     private LocalDate currentDate;
 
     public LocalDate getCurrentDate() {
@@ -24,27 +24,27 @@ public class InvoiceDto {
         this.currentDate = currentDate;
     }
 
-    public String getAmountWithoutTax() {
+    public double getAmountWithoutTax() {
         return amountWithoutTax;
     }
 
-    public void setAmountWithoutTax(String amountWithoutTax) {
+    public void setAmountWithoutTax(double amountWithoutTax) {
         this.amountWithoutTax = amountWithoutTax;
     }
 
-    public String getTotalTax() {
+    public double getTotalTax() {
         return totalTax;
     }
 
-    public void setTotalTax(String totalTax) {
+    public void setTotalTax(double totalTax) {
         this.totalTax = totalTax;
     }
 
-    public String getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 

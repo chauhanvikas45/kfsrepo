@@ -1,20 +1,23 @@
 package com.test.dto;
 
 import com.test.entity.Customer;
+import com.test.entity.CustomerBranch;
+
+import java.util.Set;
 
 public class ProductDto {
     private String productName;
     private String productDescription;
-    private String productHSNCode;
+    private int productHSNCode;
     private String productUON;
-    private String productQuantity;
-    private String productRate;
-    private String productGST;
+    private int productQuantity;
+    private float productRate;
+    //private String productGST;
     private String productImage;
-    private String cgst;
-    private String sgst;
-    private String igst;
-    private Customer customer;
+    private float cgst;
+    private float sgst;
+    private float igst;
+    private CustomerBranch customerBranch;
     private int id;
 
     public int getId() {
@@ -25,35 +28,35 @@ public class ProductDto {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public CustomerBranch getCustomerBranch() {
+        return customerBranch;
     }
 
-    public void setCustomer(Customer customerName) {
-        this.customer = customerName;
+    public void setCustomer(CustomerBranch customerNameBranch) {
+        this.customerBranch = customerNameBranch;
     }
 
-    public String getCgst() {
+    public float getCgst() {
         return cgst;
     }
 
-    public void setCgst(String cgst) {
+    public void setCgst(float cgst) {
         this.cgst = cgst;
     }
 
-    public String getSgst() {
+    public float getSgst() {
         return sgst;
     }
 
-    public void setSgst(String sgst) {
+    public void setSgst(float sgst) {
         this.sgst = sgst;
     }
 
-    public String getIgst() {
+    public float getIgst() {
         return igst;
     }
 
-    public void setIgst(String igst) {
+    public void setIgst(float igst) {
         this.igst = igst;
     }
 
@@ -61,112 +64,9 @@ public class ProductDto {
 
     }
 
-    public ProductDto(Builder builder){
-        this.productDescription=builder.productDescription;
-        this.productHSNCode=builder.productHSNCode;
-        this.productUON=builder.productUON;
-        this.productQuantity=builder.productQuantity;
-        this.productName=builder.productName;
-        this.productRate=builder.productRate;
-        this.productGST=builder.productGST;
-        this.productImage=builder.productImage;
-        this.cgst=builder.cgst;
-        this.sgst=builder.sgst;
-        this.igst=builder.igst;
-
-
-    }
-
-
-    public static class Builder{
-        private String productName;
-        private String productDescription;
-        private String productHSNCode;
-        private String productUON;
-        private String productQuantity;
-        private String productRate;
-        private String productGST;
-        private String productImage;
-        private String cgst;
-        private String sgst;
-        private String igst;
-        private String customerName;
 
 
 
-        public Builder setCustomerName(String customerName) {
-            this.customerName = customerName;
-            return this;
-        }
-
-        public Builder setCgst(String cgst) {
-            this.cgst = cgst;
-            return this;
-        }
-
-
-
-        public Builder setSgst(String sgst) {
-            this.sgst = sgst;
-            return this;
-        }
-
-
-
-        public Builder setIgst(String igst) {
-            this.igst = igst;
-            return this;
-        }
-
-
-        public Builder setProductName(String productName) {
-            this.productName = productName;
-            return this;
-        }
-
-        public Builder setProductDescription(String productDescription) {
-            this.productDescription = productDescription;
-            return this;
-        }
-
-        public Builder setProductHSNCode(String productHSNCode) {
-            this.productHSNCode = productHSNCode;
-            return this;
-        }
-
-        public Builder setProductUON(String productUON) {
-            this.productUON = productUON;
-            return this;
-        }
-
-        public Builder setProductQuantity(String productQuantity) {
-            this.productQuantity = productQuantity;
-            return this;
-        }
-
-        public Builder setProductRate(String productRate) {
-            this.productRate = productRate;
-            return this;
-        }
-
-        public Builder setProductGST(String productGST) {
-            this.productGST = productGST;
-            return this;
-        }
-
-        public Builder setProductImage(String productImage) {
-            this.productImage = productImage;
-            return this;
-        }
-
-        public ProductDto build(){
-            ProductDto productDto = new ProductDto(this);
-            return productDto;
-        }
-
-
-
-    }
 
 
     @Override
@@ -178,7 +78,7 @@ public class ProductDto {
                 ", productUON='" + productUON + '\'' +
                 ", productQuantity=" + productQuantity +
                 ", productRate='" + productRate + '\'' +
-                ", productGST='" + productGST + '\'' +
+   //             ", productGST='" + productGST + '\'' +
                 ", productImage=" + productImage +
                 '}';
     }
@@ -199,11 +99,11 @@ public class ProductDto {
         this.productDescription = productDescription;
     }
 
-    public String getProductHSNCode() {
+    public int getProductHSNCode() {
         return productHSNCode;
     }
 
-    public void setProductHSNCode(String productHSNCode) {
+    public void setProductHSNCode(int productHSNCode) {
         this.productHSNCode = productHSNCode;
     }
 
@@ -215,29 +115,29 @@ public class ProductDto {
         this.productUON = productUON;
     }
 
-    public String getProductQuantity() {
+    public int getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(String productQuantity) {
+    public void setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
     }
 
-    public String getProductRate() {
+    public float getProductRate() {
         return productRate;
     }
 
-    public void setProductRate(String productRate) {
+    public void setProductRate(float productRate) {
         this.productRate = productRate;
     }
 
-    public String getProductGST() {
+    /*public String getProductGST() {
         return productGST;
     }
 
     public void setProductGST(String productGST) {
         this.productGST = productGST;
-    }
+    }*/
 
     public String getProductImage() {
         return productImage;

@@ -19,18 +19,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addNewCustomer(CustomerDto customerDto) {
 
-        //Customer customer = new Customer();
           customerRepository.save(CustomerMapper.mapCustomerDtoToEntity(customerDto));
     }
 
     @Override
-    public List<Customer> getCustomerList() {
-        List<Customer> customerList = new ArrayList<>();
+    public List<CustomerDto> getCustomerList() {
+        List<CustomerDto> customerList = new ArrayList<>();
         customerRepository.findAll().forEach(customer -> {
-            customerList.add(customer);
+            customerList.add(CustomerMapper.mapCustomerEntityToDto(customer));
         });
-
-
         return customerList;
     }
 }
