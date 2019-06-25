@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @CrossOrigin
-    @RequestMapping(path = "/addProduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping(path = "/product", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity addProduct(@RequestBody ProductDto productDto){
 
         productService.addProduct(productDto);
@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     @CrossOrigin
-    @RequestMapping(path = "/getProductsForCustomer/{customerName}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/products/{customerName}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProductsForCustomer(@PathVariable String customerName) throws JsonProcessingException {
         List<String> productList = productService.getProductListForSpecificCustomer(customerName);
         System.out.println(productList);
@@ -43,7 +43,7 @@ public class ProductController {
 
 
     @CrossOrigin
-    @RequestMapping(path = "/getProductList", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/products", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProductList() throws JsonProcessingException {
         List<Product> productList = productService.getProductList();
         System.out.println(productList);
@@ -56,8 +56,8 @@ public class ProductController {
 
 
     @CrossOrigin
-    @RequestMapping(path = "/getProductDetails", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity getProductDetails(ProductDto requestedProductDto) throws JsonProcessingException {
+    @RequestMapping(path = "/productDetails", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getProductDetails(@RequestBody ProductDto requestedProductDto) throws JsonProcessingException {
         ProductDto productDto = productService.getProductDetails(requestedProductDto);
         System.out.println(productDto.getProductName());
         System.out.println(productDto.getProductDescription());

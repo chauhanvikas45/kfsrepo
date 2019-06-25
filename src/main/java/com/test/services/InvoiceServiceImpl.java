@@ -46,18 +46,18 @@ public class InvoiceServiceImpl implements InvoiceService {
         InvoiceDto invoiceDto = new InvoiceDto();
         Customer customer = new Customer();
 
-        if(null != customer.getCustomerBranch()){
-            if(!customer.getCustomerBranch().contains(productDto.getCustomerBranch()))
+        if(null != customer.getCustomerBranches()){
+            if(!customer.getCustomerBranches().contains(productDto.getCustomerBranch()))
             {
-            customer.getCustomerBranch().add(productDto.getCustomerBranch());
+            customer.getCustomerBranches().add(productDto.getCustomerBranch());
             }
 
         }
-        else
-        {
-            Set<CustomerBranch> customerBranchSet = new HashSet<CustomerBranch>();
-            customer.setCustomerBranch(customerBranchSet);
-        }
+//        else
+//        {
+//            List<CustomerBranch> customerBranchSet = new ArrayList<>();
+//            customer.setCustomerBranches(customerBranchSet);
+//        }
 
         invoiceDto.setCustomer(customer);
         //Product product = productRepository.findById(product.getId();

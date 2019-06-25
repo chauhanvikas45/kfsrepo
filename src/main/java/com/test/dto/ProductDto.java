@@ -8,15 +8,15 @@ import java.util.Set;
 public class ProductDto {
     private String productName;
     private String productDescription;
-    private int productHSNCode;
+    private int productHSNCode =0;
     private String productUON;
-    private int productQuantity;
-    private float productRate;
+    private Integer productQuantity = 0;
+    private Float productRate= new Float(0);
     //private String productGST;
     private String productImage;
-    private float cgst;
-    private float sgst;
-    private float igst;
+    private Float cgst= new Float(0);
+    private Float sgst= new Float(0);
+    private Float igst= new Float(0);
     private CustomerBranch customerBranch;
     private int id;
 
@@ -32,8 +32,8 @@ public class ProductDto {
         return customerBranch;
     }
 
-    public void setCustomer(CustomerBranch customerNameBranch) {
-        this.customerBranch = customerNameBranch;
+    public void setCustomerBranch(CustomerBranch customerBranch) {
+        this.customerBranch = customerBranch;
     }
 
     public float getCgst() {

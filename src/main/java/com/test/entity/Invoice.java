@@ -41,7 +41,7 @@ public class Invoice {
     private Product productId;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private Customer customers;
 

@@ -13,7 +13,7 @@ public class CustomerBranchMapper {
         customerBranch.setCustomerEmail(customerBranchDto.getCustomerEmail());
         customerBranch.setCustomerPhone(customerBranchDto.getCustomerPhone());
         customerBranch.setCustomerState(customerBranchDto.getCustomerState());
-        customerBranch.setCustomer(customerBranchDto.getCustomer());
+//        customerBranch.setCustomerId(customerBranchDto.getCustomer());
         return customerBranch;
     }
 
@@ -25,7 +25,7 @@ public class CustomerBranchMapper {
         customerBranchDto.setCustomerEmail(customerBranch.getCustomerEmail());
         customerBranchDto.setCustomerPhone(customerBranch.getCustomerPhone());
         customerBranchDto.setCustomerState(customerBranch.getCustomerState());
-        customerBranchDto.setCustomer(customerBranch.getCustomer());
+//        customerBranchDto.setCustomer(customerBranch.getCustomerId());
         return customerBranchDto;
     }
 

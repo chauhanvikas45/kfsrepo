@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product,String> {
     List<Product> findProductByProductName(String productName);
-    List<Product> findProductByCustomerProduct(Customer customer);
+    /*List<Product> findProductByCustomerProduct(Customer customer);*/
 }

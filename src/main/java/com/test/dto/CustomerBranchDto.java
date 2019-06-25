@@ -1,8 +1,9 @@
 package com.test.dto;
 
 import com.test.entity.Customer;
+import com.test.entity.Product;
 
-import javax.persistence.Column;
+import java.util.Set;
 
 public class CustomerBranchDto {
 
@@ -13,11 +14,20 @@ public class CustomerBranchDto {
     private String customerAddress;
     private String customerEmail;
     private String customerPhone;
-    private int customerState;
-    private String customerCode;
+    private String customerState;
+    private int customerCode = 0;
     private String branchName;
-    private Customer customer;
+    private Customer customerId;
     private boolean deletionFlag;
+    private Set<Product> product;
+
+    public Set<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(Set<Product> product) {
+        this.product = product;
+    }
 
     public int getId() {
         return id;
@@ -51,19 +61,19 @@ public class CustomerBranchDto {
         this.customerPhone = customerPhone;
     }
 
-    public int getCustomerState() {
+    public String getCustomerState() {
         return customerState;
     }
 
-    public void setCustomerState(int customerState) {
+    public void setCustomerState(String customerState) {
         this.customerState = customerState;
     }
 
-    public String getCustomerCode() {
+    public int getCustomerCode() {
         return customerCode;
     }
 
-    public void setCustomerCode(String customerCode) {
+    public void setCustomerCode(int customerCode) {
         this.customerCode = customerCode;
     }
 
@@ -75,12 +85,12 @@ public class CustomerBranchDto {
         this.branchName = branchName;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Customer customer) {
+        this.customerId = customer;
     }
 
     public boolean isDeletionFlag() {
@@ -101,7 +111,7 @@ public class CustomerBranchDto {
                 ", customerState=" + customerState +
                 ", customerCode='" + customerCode + '\'' +
                 ", branchName='" + branchName + '\'' +
-                ", customer=" + customer +
+                ", customer=" + customerId +
                 ", deletionFlag=" + deletionFlag +
                 '}';
     }

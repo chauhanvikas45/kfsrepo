@@ -1,44 +1,75 @@
 package com.test.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="customerBranch")
+@Table(name = "customerBranch")
 public class CustomerBranch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="customerAddress" , nullable = false)
+    @Column(name = "customerAddress", nullable = false)
     private String customerAddress;
-    @Column(name="customerEmail" , nullable = false)
+    @Column(name = "customerEmail", nullable = false)
     private String customerEmail;
-    @Column(name="customerPhone" , nullable = false)
+    @Column(name = "customerPhone", nullable = false)
     private String customerPhone;
-    @Column(name="customerState" , nullable = false)
-    private int customerState;
-    @Column(name="customerCode" , nullable = false)
-    private String customerCode;
-    @Column(name="branchName" , nullable = false)
+    @Column(name = "customerState", nullable = false)
+    private String customerState;
+    @Column(name = "customerCode", nullable = false)
+    private Integer customerCode = 0;
+    @Column(name = "branchName", nullable = false)
     private String branchName;
-    /*@Column(name="customer" , nullable = false)
-    private Customer customer;*/
 
 
-
-    @OneToMany(mappedBy = "customerBranch")
+    //@OneToMany(mappedBy = "customerBranch")
+    @OneToMany(mappedBy = "customerBranchId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> product;
 
-    @ManyToOne
-    @JoinColumn(name = "customerForBranch")
-    private Customer customerForBranch;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerId")
+    private Customer customerId;
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Customer customer) {
+        this.customerId = customer;
+    }
+
+    @Column(name = "deletionStatus")
+    private boolean deletionFlag = false;
 
 
-    @Column(name="deletionStatus")
-    private boolean deletionFlag =false;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Set<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(Set<Product> product) {
+        this.product = product;
+    }
+
+    public boolean isDeletionFlag() {
+        return deletionFlag;
+    }
+
+    public void setDeletionFlag(boolean deletionFlag) {
+        this.deletionFlag = deletionFlag;
+    }
 
     public String getCustomerAddress() {
         return customerAddress;
@@ -64,19 +95,19 @@ public class CustomerBranch {
         this.customerPhone = customerPhone;
     }
 
-    public int getCustomerState() {
+    public String getCustomerState() {
         return customerState;
     }
 
-    public void setCustomerState(int customerState) {
+    public void setCustomerState(String customerState) {
         this.customerState = customerState;
     }
 
-    public String getCustomerCode() {
+    public int getCustomerCode() {
         return customerCode;
     }
 
-    public void setCustomerCode(String customerCode) {
+    public void setCustomerCode(int customerCode) {
         this.customerCode = customerCode;
     }
 
@@ -88,14 +119,19 @@ public class CustomerBranch {
         this.branchName = branchName;
     }
 
-    public Customer getCustomer() {
-        return customerForBranch;
+
+    @Override
+    public String toString() {
+        return "CustomerBranch{" +
+                "id=" + id +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", customerState='" + customerState + '\'' +
+                ", customerCode=" + customerCode +
+                ", branchName='" + branchName + '\'' +
+                ", product=" + product +
+                ", deletionFlag=" + deletionFlag +
+                '}';
     }
-
-    public void setCustomer(Customer customer) {
-        this.customerForBranch = customer;
-    }
-
-
-
 }

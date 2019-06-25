@@ -13,47 +13,40 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="productName" , nullable = false)
+    @Column(name = "productName", nullable = false)
     private String productName;
-    @Column(name="productDescription" , nullable = false)
+    @Column(name = "productDescription", nullable = false)
     private String productDescription;
-    @Column(name="productHSNCode" , nullable = false)
-    private int productHSNCode;
-    @Column(name="productUON" , nullable = false)
+    @Column(name = "productHSNCode", nullable = false)
+    private int productHSNCode = 0;
+    @Column(name = "productUON", nullable = false)
     private String productUON;
-    @Column(name="productQuantity" , nullable = false)
-    private int productQuantity;
-    @Column(name="productRate" , nullable = false)
+    @Column(name = "productQuantity", nullable = false)
+    private int productQuantity = 0;
+    @Column(name = "productRate", nullable = false)
     private Float productRate;
-    @Column(name="productImage" , nullable = true)
+    @Column(name = "productImage", nullable = true)
     private String productImage;
 
     @Column(name = "cgst")
-    private Float cgst;
+    private Float cgst = new Float(0);
     @Column(name = "sgst")
-    private Float sgst;
+    private Float sgst = new Float(0);
     @Column(name = "igst")
-    private Float igst;
+    private Float igst = new Float(0);
 
     @Column(name = "deletionFlag")
-    private boolean deletionFlag=false;
+    private boolean deletionFlag = false;
 
 
-    @ManyToOne
-    @JoinColumn(name = "customerBranch")
-    private CustomerBranch customerBranch;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerBranchId")
+    private CustomerBranch customerBranchId;
 
-    public Customer getCustomerProduct() {
-        return customerProduct;
-    }
 
-    public void setCustomerProduct(Customer customerProduct) {
-        this.customerProduct = customerProduct;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "customerProduct")
-    private Customer customerProduct;
+/*    @ManyToOne
+    @JoinColumn(name = "customerName")
+    private Customer customerProduct;*/
 
     public void setProductRate(Float productRate) {
         this.productRate = productRate;
@@ -71,12 +64,12 @@ public class Product {
         this.igst = igst;
     }
 
-    public CustomerBranch getCustomerBranch() {
-        return customerBranch;
+    public CustomerBranch getCustomerBranchId() {
+        return customerBranchId;
     }
 
-    public void setCustomerBranch(CustomerBranch customerBranch) {
-        this.customerBranch = customerBranch;
+    public void setCustomerBranchId(CustomerBranch customerBranchId) {
+        this.customerBranchId = customerBranchId;
     }
 
     public boolean isDeletionFlag() {
@@ -104,8 +97,6 @@ public class Product {
     private Set<Invoice> invoices;*/
 
 
-
-
     public int getId() {
         return id;
     }
@@ -118,7 +109,7 @@ public class Product {
         return productName;
     }
 
-    public float getCgst() {
+    public Float getCgst() {
         return cgst;
     }
 
@@ -126,7 +117,7 @@ public class Product {
         this.cgst = cgst;
     }
 
-    public float getSgst() {
+    public Float getSgst() {
         return sgst;
     }
 
@@ -134,7 +125,7 @@ public class Product {
         this.sgst = sgst;
     }
 
-    public float getIgst() {
+    public Float getIgst() {
         return igst;
     }
 
@@ -154,7 +145,7 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public int getProductHSNCode() {
+    public Integer getProductHSNCode() {
         return productHSNCode;
     }
 
@@ -170,7 +161,7 @@ public class Product {
         this.productUON = productUON;
     }
 
-    public int getProductQuantity() {
+    public Integer getProductQuantity() {
         return productQuantity;
     }
 
@@ -178,7 +169,7 @@ public class Product {
         this.productQuantity = productQuantity;
     }
 
-    public float getProductRate() {
+    public Float getProductRate() {
         return productRate;
     }
 

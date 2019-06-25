@@ -1,5 +1,11 @@
 package com.test.dto;
 
+import com.test.entity.CustomerBranch;
+import com.test.entity.Product;
+
+import java.util.List;
+import java.util.Set;
+
 public class CustomerDto {
 
 
@@ -7,9 +13,36 @@ public class CustomerDto {
     private int id;
     private String customerName;
     private String customerGSTIN;
+    private List<CustomerBranch> customerBranch;
+    private Product product;
+    private boolean deletionFlag;
 
     public CustomerDto(){
 
+    }
+
+    public List<CustomerBranch> getCustomerBranch() {
+        return customerBranch;
+    }
+
+    public void setCustomerBranch(List<CustomerBranch> customerBranch) {
+        this.customerBranch = customerBranch;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public boolean isDeletionFlag() {
+        return deletionFlag;
+    }
+
+    public void setDeletionFlag(boolean deletionFlag) {
+        this.deletionFlag = deletionFlag;
     }
 
     public int getId() {

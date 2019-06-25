@@ -3,30 +3,30 @@ package com.test.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name="customer")
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="customerName" , nullable = false)
+
+
+    @Column(name = "customerName", nullable = false)
     private String customerName;
 
-    @Column(name="customerGSTIN" , nullable = false)
+    @Column(name = "customerGSTIN", nullable = false)
     private String customerGSTIN;
 
-    @Column(name="deletionStatus")
-    private boolean deletionFlag =false;
 
-    @OneToMany(mappedBy = "customerProduct")
-    private Set<Product> product;
+    @Column(name = "deletionStatus")
+    private boolean deletionFlag = false;
 
-    @OneToMany(mappedBy = "customerForBranch")
-    private Set<CustomerBranch> customerBranch;
-
+    @OneToMany( mappedBy = "customerId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<CustomerBranch> customerBranches = new ArrayList();
 
     public boolean isDeletionFlag() {
         return deletionFlag;
@@ -36,8 +36,6 @@ public class Customer {
         this.deletionFlag = deletionFlag;
     }
 
-
-
     public String getCustomerGSTIN() {
         return customerGSTIN;
     }
@@ -46,21 +44,13 @@ public class Customer {
         this.customerGSTIN = customerGSTIN;
     }
 
-    public Set<CustomerBranch> getCustomerBranch() {
-        return customerBranch;
+    public List<CustomerBranch> getCustomerBranches() {
+        return customerBranches;
     }
 
-    public void setCustomerBranch(Set<CustomerBranch> customerBranch) {
-        this.customerBranch = customerBranch;
-    }
-
-    public Set<Product> getProduct() {
-        return product;
-    }
-
-    public void setProduct(Set<Product> product) {
-        this.product = product;
-    }
+//    public void setCustomerBranches(List<CustomerBranch> customerBranch) {
+//        this.customerBranches = customerBranch;
+//    }
 
     public int getId() {
         return id;
@@ -78,5 +68,13 @@ public class Customer {
         this.customerName = customerName;
     }
 
+    public void addCustomerBranches(CustomerBranch customerBranch) {
+        customerBranches.add(customerBranch);
+        customerBranch.setCustomerId(this);
+    }
 
+    public void removeCustomerBranches(CustomerBranch customerBranch) {
+        customerBranches.remove(customerBranch);
+        customerBranch.setCustomerId(this);
+    }
 }
