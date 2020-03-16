@@ -1,5 +1,9 @@
 package com.test.entity;
 
+import com.test.utils.StringPrefixedSequenceIdGenerator;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,23 +13,58 @@ import java.util.List;
 public class Invoice {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String inovices;
-    private String totalAmount;
 
-    @Temporal(TemporalType.TIMESTAMP)
+   // @CreationTimestamp
+
+    /*@GenericGenerator(
+            name = "inovices",
+            strategy = "com.test.utils.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "B_"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })*/
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "inovices"*/)
+    private String inovices;
+    private double totalAmount;
+
+    @CreationTimestamp
     private Date lastUpdated;
 
+    @ManyToOne
+    @JoinColumn(name = "customerBranchId")
+    private CustomerBranch customerBranch;
 
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product productId;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private Customer customers;
+
+    public String getInovices() {
+        return inovices;
+    }
+
+    public void setInovices(String inovices) {
+        this.inovices = inovices;
+    }
+
+    public Product getProductId() {
+        return productId;
+    }
+
+    public CustomerBranch getCustomerBranch() {
+        return customerBranch;
+    }
+
+    public void setCustomerBranch(CustomerBranch customerBranch) {
+        this.customerBranch = customerBranch;
+    }
+
 
 
     public int getId() {
@@ -56,11 +95,11 @@ public class Invoice {
         this.inovices = invoiceNumber;
     }
 
-    public String getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 

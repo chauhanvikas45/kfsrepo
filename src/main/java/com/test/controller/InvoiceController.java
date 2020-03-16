@@ -3,15 +3,19 @@ package com.test.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.dto.CustomerDto;
 import com.test.dto.InvoiceDto;
+import com.test.dto.ProductDto;
 import com.test.entity.Invoice;
 import com.test.services.InvoiceService;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class InvoiceController {
 
     private InvoiceService invoiceService;
@@ -38,10 +42,16 @@ public class InvoiceController {
 
 
     @CrossOrigin
-    @RequestMapping(path = "/generateInvoice", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity generateInvoiceForProduct(InvoiceDto invoiceDto) throws JsonProcessingException {
-        invoiceService.generateInvoice(invoiceDto);
-        return new ResponseEntity("Success", HttpStatus.OK);
+    @RequestMapping(path = "/generateInvoice", method = RequestMethod.POST/*, produces = "application/json"*/)
+    public String generateInvoiceForProduct(@RequestBody ProductDto productDto,Model model) throws JsonProcessingException {
+        String resp = null;
+        try {
+            resp = invoiceService.generateInvoice(productDto,model);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            resp =e.getMessage();
+        }
+        return resp;
     }
 
 

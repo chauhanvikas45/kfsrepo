@@ -1,5 +1,7 @@
 package com.test.entity;
 
+import org.springframework.boot.autoconfigure.web.ResourceProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,37 +11,77 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="productName" , nullable = false)
+    @Column(name = "productName", nullable = false)
     private String productName;
-    @Column(name="productDescription" , nullable = false)
+    @Column(name = "productDescription", nullable = false)
     private String productDescription;
-    @Column(name="productHSNCode" , nullable = false)
-    private String productHSNCode;
-    @Column(name="productUON" , nullable = false)
+    @Column(name = "productHSNCode", nullable = false)
+    private int productHSNCode = 0;
+    @Column(name = "productUON", nullable = false)
     private String productUON;
-    @Column(name="productQuantity" , nullable = false)
-    private String productQuantity;
-    @Column(name="productRate" , nullable = false)
-    private String productRate;
-    @Column(name="productImage" , nullable = true)
+    @Column(name = "productQuantity", nullable = false)
+    private int productQuantity = 0;
+    @Column(name = "productRate", nullable = false)
+    private Float productRate;
+    @Column(name = "productImage", nullable = true)
     private String productImage;
 
-    private String cgst;
-    private String sgst;
-    private String igst;
-    @ManyToOne
-    @JoinColumn(name = "customer")
-    private Customer customer;
+    @Column(name = "cgst")
+    private Float cgst = new Float(0);
+    @Column(name = "sgst")
+    private Float sgst = new Float(0);
+    @Column(name = "igst")
+    private Float igst = new Float(0);
 
-    public Customer getCustomer() {
-        return customer;
+    @Column(name = "deletionFlag")
+    private boolean deletionFlag = false;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerBranchId")
+    private CustomerBranch customerBranchId;
+
+
+/*    @ManyToOne
+    @JoinColumn(name = "customerName")
+    private Customer customerProduct;*/
+
+    public void setProductRate(Float productRate) {
+        this.productRate = productRate;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
     }
+
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public void setIgst(Float igst) {
+        this.igst = igst;
+    }
+
+    public CustomerBranch getCustomerBranchId() {
+        return customerBranchId;
+    }
+
+    public void setCustomerBranchId(CustomerBranch customerBranchId) {
+        this.customerBranchId = customerBranchId;
+    }
+
+    public boolean isDeletionFlag() {
+        return deletionFlag;
+    }
+
+    public void setDeletionFlag(boolean deletionFlag) {
+        this.deletionFlag = deletionFlag;
+    }
+
+
+
 
   /*  public Set<Invoice> getInvoices() {
         return invoices;
@@ -55,8 +97,6 @@ public class Product {
     private Set<Invoice> invoices;*/
 
 
-
-
     public int getId() {
         return id;
     }
@@ -69,27 +109,27 @@ public class Product {
         return productName;
     }
 
-    public String getCgst() {
+    public Float getCgst() {
         return cgst;
     }
 
-    public void setCgst(String cgst) {
+    public void setCgst(float cgst) {
         this.cgst = cgst;
     }
 
-    public String getSgst() {
+    public Float getSgst() {
         return sgst;
     }
 
-    public void setSgst(String sgst) {
+    public void setSgst(float sgst) {
         this.sgst = sgst;
     }
 
-    public String getIgst() {
+    public Float getIgst() {
         return igst;
     }
 
-    public void setIgst(String igst) {
+    public void setIgst(float igst) {
         this.igst = igst;
     }
 
@@ -105,11 +145,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public String getProductHSNCode() {
+    public Integer getProductHSNCode() {
         return productHSNCode;
     }
 
-    public void setProductHSNCode(String productHSNCode) {
+    public void setProductHSNCode(int productHSNCode) {
         this.productHSNCode = productHSNCode;
     }
 
@@ -121,19 +161,19 @@ public class Product {
         this.productUON = productUON;
     }
 
-    public String getProductQuantity() {
+    public Integer getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(String productQuantity) {
+    public void setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
     }
 
-    public String getProductRate() {
+    public Float getProductRate() {
         return productRate;
     }
 
-    public void setProductRate(String productRate) {
+    public void setProductRate(float productRate) {
         this.productRate = productRate;
     }
 

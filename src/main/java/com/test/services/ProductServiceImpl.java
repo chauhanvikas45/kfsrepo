@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     public List<String> getProductListForSpecificCustomer(String customerName) {
         //TODO select product for specific customer
         List<Product> productList = new ArrayList<>();
-        productRepository.findProductByCustomer(customerRepository.getCustomerByCustomerName(customerName).get(0)).forEach(productDto -> productList.add(productDto));
+        //productRepository.findProductByCustomerProduct(customerRepository.getCustomerByCustomerName(customerName).get(0)).forEach(productDto -> productList.add(productDto));
 
         List<String> productNameList = new ArrayList<>();
         for (Product product : productList

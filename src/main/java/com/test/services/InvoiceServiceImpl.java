@@ -4,24 +4,31 @@ import com.test.dto.CustomerDto;
 import com.test.dto.InvoiceDto;
 import com.test.dto.ProductDto;
 import com.test.entity.Customer;
+import com.test.entity.CustomerBranch;
 import com.test.entity.Invoice;
-import com.test.entity.Product;
 import com.test.mapper.CustomerMapper;
 import com.test.mapper.InvoiceMapper;
 import com.test.mapper.ProductMapper;
 import com.test.repository.InvoiceRepository;
 import com.test.repository.ProductRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class InvoiceServiceImpl implements InvoiceService{
+public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    ProductRepository productRepository;
 
 
     @Override
@@ -34,45 +41,40 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
 
     @Override
-    public void generateInvoice(InvoiceDto invoiceDto) {
-        CustomerDto customerDto = new CustomerDto();
-        customerDto.setId(1);
-        customerDto.setCustomerName("asdas");
-        customerDto.setCustomerAddress("sdadas");
-        customerDto.setCustomerCode("sadas");
-        customerDto.setCustomerEmail("afdsdv");
-        customerDto.setCustomerGSTIN("sdf");
-        customerDto.setCustomerPhone("e2e22e");
-        customerDto.setCustomerState("fhaga");
+    public String generateInvoice(ProductDto productDto, Model model) throws NotFoundException {
 
-        invoiceDto.setCustomer(CustomerMapper.mapCustomerDtoToEntity(customerDto));
+        InvoiceDto invoiceDto = new InvoiceDto();
+        Customer customer = new Customer();
 
-        ProductDto productDto = new ProductDto();
-        productDto.setCgst("3");
-        productDto.setProductRate("2");
-        productDto.setProductQuantity("4");
-        productDto.setProductUON("ADS");
-        productDto.setProductHSNCode("AD");
-        productDto.setProductDescription("fdfsdfsdf");
-        productDto.setProductName("fsdfsdfs");
-        productDto.setId(2);
-        productDto.setIgst("3");
-        productDto.setSgst("0");
-        Customer customer = CustomerMapper.mapCustomerDtoToEntity(customerDto);
-        productDto.setCustomer(customer);
+        if(null != customer.getCustomerBranches()){
+            if(!customer.getCustomerBranches().contains(productDto.getCustomerBranch()))
+            {
+            customer.getCustomerBranches().add(productDto.getCustomerBranch());
+            }
 
-        //Product produc = new Product();
-        //ProductMapper.mapDtoToEntity(productDto);
-        invoiceDto.setId(1);
-        invoiceDto.setInvoiceNumber("12312");
-        invoiceDto.setTotolAmount("23123");
-        Product product = ProductMapper.mapDtoToEntity(productDto);
-        invoiceDto.setProduct(product);
+        }
+//        else
+//        {
+//            List<CustomerBranch> customerBranchSet = new ArrayList<>();
+//            customer.setCustomerBranches(customerBranchSet);
+//        }
+
+        invoiceDto.setCustomer(customer);
+        //Product product = productRepository.findById(product.getId();
+        //if(productDto.getProductQuantity() > )
+        invoiceDto.setProduct(ProductMapper.mapDtoToEntity(productDto));
+        invoiceDto.setTotalAmount(calculateInvoiceAmount(productDto, invoiceDto));
 
         Invoice invoice = InvoiceMapper.invoiceDtoToEntity(invoiceDto);
-        invoiceRepository.save(invoice);
 
+        invoiceRepository.save(invoice);
+        invoiceDto.setCurrentDate(LocalDate.now());
+        if(null == invoiceDto.getCustomer()){
+            throw new NotFoundException("Customer details not found");
+        }
+        return getInvoice(model, invoiceDto);
     }
+
 
     @Override
     public List<Invoice> getInvoiceListForCustomer(CustomerDto customerDto) {
@@ -81,12 +83,76 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoiceRepository.getInvoiceListByCustomers(CustomerMapper.mapCustomerDtoToEntity(customerDto)).forEach(invoice -> {
             invoiceList.add(invoice);
         });
+
         return invoiceList;
     }
 
+    private double calculateInvoiceAmount(ProductDto productDto, InvoiceDto invoiceDto) {
 
-    public static void main(String[] args) {
-        InvoiceServiceImpl invoiceService = new InvoiceServiceImpl();
-        invoiceService.generateInvoice(new InvoiceDto());
+        double totalAmount = 0;
+        float cgst=0;
+        float sgst=0;
+        float igst=0;
+
+        totalAmount = totalAmount + productDto.getProductQuantity() * productDto.getProductRate();
+        /*if (null != invoiceDto.getProduct().getCgst() &&invoiceDto.getProduct().getCgst().equals("true")){
+            cgst =getCgstTax(totalAmount);
+            invoiceDto.getProduct().setCgst(String.valueOf(cgst));
+        }
+
+        if (null != invoiceDto.getProduct().getSgst() && invoiceDto.getProduct().getSgst().equals("true")){
+            sgst=getSgstTax(totalAmount);
+            invoiceDto.getProduct().setSgst(String.valueOf(sgst));
+        }
+
+        if (null != invoiceDto.getProduct().getIgst() && invoiceDto.getProduct().getIgst().equals("true")){
+            igst =getIgstTax(totalAmount);
+            invoiceDto.getProduct().setIgst(String.valueOf(igst));
+        }*/
+
+
+        invoiceDto.setAmountWithoutTax(totalAmount);
+        invoiceDto.setTotalTax(sgst+igst+cgst);
+        totalAmount = totalAmount + sgst+igst+cgst;
+
+        //System.out.println("tax " + getCgstTax(totalAmount) + " " + getIgstTax(totalAmount) + " " + getSgstTax(totalAmount));
+
+        return totalAmount;
     }
+
+    private int getSgstTax(int totalAmount) {
+        int i = (totalAmount * 9) / 100;
+        return i;
+
+    }
+
+    private int getCgstTax(int totalAmount) {
+        int i = (totalAmount * 9) / 100;
+        return i;
+
+    }
+
+    private int getIgstTax(int totalAmount) {
+        int i = (totalAmount * 18) / 100;
+        return i;
+
+    }
+
+    private int getTotaltax(int totalAmount) {
+        return getCgstTax(totalAmount) + getIgstTax(totalAmount) + getSgstTax(totalAmount);
+    }
+
+    private String getInvoice(Model model, InvoiceDto invoiceDto) {
+        model.addAttribute("invoice", invoiceDto);
+        return "index";
+    }
+
+    private static boolean isNull(String param) {
+        if (null == param && param.isEmpty())
+            return true;
+
+        return false;
+    }
+
+
 }
